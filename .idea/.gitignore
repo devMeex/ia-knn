@@ -2,8 +2,7 @@
 /shelf/
 /workspace.xml
 # Datasource local storage ignored files
-/../../../../../../../:\Documentos\UTN-ISI\UTN-FRRe 2020\IA\Dev\.idea/dataSources/
+/../../../../../../../../:\Documentos\UTN-ISI\UTN-FRRe 2020\IA\TP Final\App\.idea/dataSources/
 /dataSources.local.xml
 # Editor-based HTTP Client requests
 /httpRequests/
-env/

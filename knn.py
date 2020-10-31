@@ -155,7 +155,7 @@ def clasificar_datatest(train, test, labels):
     print("letseethelabels" + str(labels))
     acertados = 0
     resultados = dict()
-    for k in range(1, 10):
+    for k in range(1, 11):
         startTime = time.time()
         for i in range(len(test)):
             label = predecir_clasificacion(train, test[i], k)
@@ -272,11 +272,8 @@ def leer_dataset(path,k,porcentaje,sep, header):
     try:
         input = pd.read_csv(path, sep=sep, header=header)
         if control_entrada(input,k,porcentaje):
-            print("leer data set salida" + str(type(input)))
             Datalist = clase_to_int(input)
             labels = str_column_to_int(Datalist, len(Datalist[0]) - 1)
-            print("labels" + str(labels))
-            print("datalist" + str(Datalist))
             return input, labels
         else:
             message = "Redefina sus entradas==> k:%s ; porcentaje:%s"%(k,porcentaje)

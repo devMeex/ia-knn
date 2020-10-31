@@ -159,7 +159,7 @@
       <rect>
        <x>20</x>
        <y>30</y>
-       <width>181</width>
+       <width>190</width>
        <height>41</height>
       </rect>
      </property>
@@ -172,7 +172,14 @@
        </widget>
       </item>
       <item>
-       <widget class="QSpinBox" name="input_entrenamiento"/>
+       <widget class="QSpinBox" name="input_entrenamiento">
+        <property name="minimum">
+         <number>0</number>
+        </property>
+        <property name="maximum">
+         <number>100</number>
+        </property>
+       </widget>
       </item>
       <item>
        <widget class="QLabel" name="label_porcentaje">
@@ -416,7 +423,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Mostrar datos</string>
+     <string>Validar datos</string>
     </property>
    </widget>
   </widget>
@@ -648,6 +655,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>input_entrenamiento</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>updateTrainingSet()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>757</x>
+     <y>143</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>963</x>
+     <y>78</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>browseSlot()</slot>
@@ -657,5 +680,6 @@
   <slot>updateTest()</slot>
   <slot>updateTable()</slot>
   <slot>entryControl()</slot>
+  <slot>updateTrainingSet()</slot>
  </slots>
 </ui>

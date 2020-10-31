@@ -190,7 +190,10 @@ def medir_procesamiento(metrica):
 def control_entrada(input, k, porcentaje):
     # porcentaje = 75
     # k = 8
+    # data = pd.DataFrame(input)
+    # print(type(data))
     if not input.empty:
+        # return "El conjunto tiene valores"
         print("No vacio")
         train, test = dividir_dataset(input.to_numpy(), porcentaje)
         if len(train) >= k:
@@ -198,13 +201,16 @@ def control_entrada(input, k, porcentaje):
                 print("Clasificar")
                 return True
             else:
+                return [False, "El dataset contiene demasiados datos de entrenamiento"]
                 print("El dataset es todo Train, ingrese to a clasificar")
         else:
+            return [False, "Debe ingresar un valor de k menor a la longitud del Dataset"]
             print("Ingreso un k mayor a len Dataset")
-            return False
+            # return False
     else:
+        return [False, "El Dataset ingresado está vacío"]
         print("Dataset ingresado vacio")
-        return False
+        # return False
 
 #################################################################################################
 # Cargar CSV

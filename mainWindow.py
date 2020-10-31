@@ -38,22 +38,33 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         self.data = tratar_csv(self.browseFile.getFileName(), sep, header)
         self.textBrowser_2.setText(str(len(self.data)))
-        print(type(self.data[2]))
+        print(type(self.data))
 
     def createTable( self ):
         # Column count
-        # self.tableWidget(len(self.data), 3)
-        self.tableWidget.setColumnCount(3)
-        # header_labels = ['X', 'Y', 'Clase']
-        # self.tableWidget.setHorizontalHeaderLabels(header_labels)
-        # Row count
-        # self.tableWidget.setRowCount(len(self.renderData))
-        # self.tableWidget.setRowCount(len(self.data))
-        self.tableWidget.setRowCount(int(len(self.data)))
+        numcols = 3
+        self.tableWidget.setColumnCount(numcols)
+        header_labels = ['X', 'Y', 'Clase']
+        self.tableWidget.setHorizontalHeaderLabels(header_labels)
 
-        #set header titles
-        # self.tableWidget.setHorizontalHeaderLabels(QString("Name;Age;Sex;Add").split(";"))
-        # self.tableWidget.setItem(0,2, QTableWidgetItem("Clase"))
+        if self.data:
+            # Row count
+            numrows = len(self.data)
+            self.tableWidget.setRowCount(numrows)
+
+            for row in range(numrows):
+                for column in range(numcols):
+                    item = QtWidgets.QTableWidgetItem(str(self.data[row][column]))
+                    # item = QtWidgets.QTableWidgetItem("Holis")
+                    print(item)
+                    self.tableWidget.setItem(row, column, item)
+
+            # print(type(rows))
+            # self.tableWidget.setRowCount(21)
+
+            #set header titles
+            # self.tableWidget.setHorizontalHeaderLabels(QString("Name;Age;Sex;Add").split(";"))
+            # self.tableWidget.setItem(0,2, QTableWidgetItem("Clase"))
 
 
     @pyqtSlot( )
@@ -96,6 +107,16 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     @pyqtSlot( )
     def updateTable( self ):
         self.renderData()
+        self.createTable()
+
+    @pyqtSlot( )
+    def entryControl( self ):
+        self.textBrowser_2.setText("controlando entrada")
+        # control = control_entrada(self.data, self.input_k, self.input_entrenamiento)
+        # if control:
+        #     self.textBrowser_2.setText("Es posible realizar operaciones")
+        # else:
+        #     self.textBrowser_2.setText(control[1])
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication([])

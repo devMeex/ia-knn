@@ -85,6 +85,12 @@
           <height>421</height>
          </rect>
         </property>
+        <property name="columnCount">
+         <number>0</number>
+        </property>
+        <attribute name="horizontalHeaderShowSortIndicator" stdset="0">
+         <bool>false</bool>
+        </attribute>
        </widget>
        <widget class="QGroupBox" name="grafico">
         <property name="geometry">
@@ -597,6 +603,118 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>input_archivo</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>entryControl()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>329</x>
+     <y>56</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-1</x>
+     <y>390</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>entryControl()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>774</x>
+     <y>54</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1</x>
+     <y>435</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>input_entrenamiento</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>entryControl()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>742</x>
+     <y>129</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>966</x>
+     <y>441</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>input_k</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>entryControl()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>440</x>
+     <y>135</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>967</x>
+     <y>385</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>input_archivo</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>browseSlot()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>155</x>
+     <y>45</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>3</x>
+     <y>33</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>separador_2</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>updateTable()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>270</x>
+     <y>139</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>3</x>
+     <y>226</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>separador_1</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>updateTable()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>203</x>
+     <y>140</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>4</x>
+     <y>159</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>browseSlot()</slot>
@@ -605,5 +723,6 @@
   <slot>classifySlot()</slot>
   <slot>updateTest()</slot>
   <slot>updateTable()</slot>
+  <slot>entryControl()</slot>
  </slots>
 </ui>

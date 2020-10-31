@@ -13,4 +13,4 @@ estas instrucciones desde https://docs.python-guide.org/starting/install3/linux/
 
 4)Para instalar las librerias necesarias ejecute en una terminal *$pip install -r requeriments.txt*.
 
-5)Luego deberia seleccionar su editor o IDE de preferencia y/o poder ejecutar el codigo con *$python knn.py* 
+5)Finalmente para generar el ejecutable debemos instalar pyinstaller. Para ellos $pip install pyinstaller

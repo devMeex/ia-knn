@@ -209,51 +209,57 @@ def control_entrada(input, k, porcentaje):
 #################################################################################################
 # Cargar CSV
 # Utilizando Pandas
-dataset_path = 'datasets/dataset04.txt'
-sep = ";"
-header = 0 #0->con etiquetas, None -> sin etiquetas
+def tratar_csv(dataset_path, sep, header):
+    # dataset_path = 'datasets/dataset04.txt'
+    # sep = ";"
+    # header = 0 #0->con etiquetas, None -> sin etiquetas
 
-# Si no esta tildado el header se pone None
-# No esta considerando el primero en caso de no tener cabecera
-input = pd.read_csv(dataset_path, sep=sep, header=header)
-# Verifica si el archivo esta vacio
+    # Si no esta tildado el header se pone None
+    # No esta considerando el primero en caso de no tener cabecera
+    input = pd.read_csv(dataset_path, sep=sep, header=header)
 
-flag = control_entrada(input, 8, 75)
+    # Verifica si el archivo esta vacio
 
-
-# Pasar de panda tabla a array
-
-array = input.to_numpy()
-array2 = np.array(input).tolist()
-# print(type(array))
-# print(type(array2))
-if flag and type(array[0][len(array[0]) - 1]) == str:  # Verifico si la clase es String sino paso a int(mejora aciertos)
-    print("String")
-else:
-    print("Number")
-    for i in range(len(array2)):
-        a = int(array2[i][len(array2[i]) - 1])
-        array2[i][len(array[i]) - 1] = a
-# print(array2) #Transformador a Int
-
-# Identidica las clases del dataset con un entero
-#labels = str_column_to_int(array2, len(array2[0]) - 1)
-# print(labels)
-
-# Dividir dataset
-#train, test = dividir_dataset(array, 75)
-# ax=plt.gca()
-# for line in ax.lines:
-#     print(line.get_xdata)
-
-# Plotear dataset
-# dibujar_puntos(array, labels)
-
-# Clasificar datas
-# metrica = clasificar_datatest(train, test)
-
-# Estadisticas
-# medir_procesamiento(metrica)
+    flag = control_entrada(input, 8, 75)
 
 
-# Ver el tema de exportar funciones o meter en clases
+    # Pasar de panda tabla a array
+
+    array = input.to_numpy()
+    array2 = np.array(input).tolist()
+    # print(type(array))
+    # print(array)
+    # print(type(array2))
+    # print(array2)
+    if flag and type(array[0][len(array[0]) - 1]) == str:  # Verifico si la clase es String sino paso a int(mejora aciertos)
+        print("String")
+    else:
+        print("Number")
+        for i in range(len(array2)):
+            a = int(array2[i][len(array2[i]) - 1])
+            array2[i][len(array[i]) - 1] = a
+
+    return array2
+    # print(array2) #Transformador a Int
+
+    # Identidica las clases del dataset con un entero
+    #labels = str_column_to_int(array2, len(array2[0]) - 1)
+    # print(labels)
+
+    # Dividir dataset
+    #train, test = dividir_dataset(array, 75)
+    # ax=plt.gca()
+    # for line in ax.lines:
+    #     print(line.get_xdata)
+
+    # Plotear dataset
+    # dibujar_puntos(array, labels)
+
+    # Clasificar datas
+    # metrica = clasificar_datatest(train, test)
+
+    # Estadisticas
+    # medir_procesamiento(metrica)
+
+
+    # Ver el tema de exportar funciones o meter en clases

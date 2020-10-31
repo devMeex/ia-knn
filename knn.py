@@ -1,61 +1,39 @@
-"""""
-CORE KNN
-"""
+"""""""""""""""""
+--- CORE Algoritmo KNN ---
+"""""""""""""""""
 import time
-from csv import reader
 from math import sqrt
 
 import matplotlib.pyplot as plt
+from matplotlib.colors import ListedColormap
 import numpy as np
-# from matplotlib.colors import ListedColormap
 import pandas as pd
 
 
-# Cargar el dataset csv
-def cargar_csv(filename):
-    dataset = list()
-    with open(filename, 'r') as file:
-        csv_reader = reader(file)
-        for row in csv_reader:
-            if not row:
-                continue
-            dataset.append(row)
-    return dataset
-
-
-# Actualmente NO USO
-# Convertir filas (string) => (float)
-def str_column_to_float(dataset, column):
-    for row in dataset:
-        row[column] = float(row[column].strip())  # Elimina whitespaces de c/u column
-
-
 # Captura las clases y las etiqueta con un int
-def str_column_to_int(dataset, column):
-    class_values = [row[column] for row in dataset]
-    unique = set(class_values)
-    lookup = dict()
-    # print("***",type(class_values))
+def str_column_to_int(dataset, columna):
+    valores_clases = [row[columna] for row in dataset]
+    unica = set(valores_clases)
+    busqueda = dict()
     # Diccionario con las valores de clases
-    for i, value in enumerate(unique):
-        lookup[value] = i
+    for i, value in enumerate(unica):
+        busqueda[value] = i
         # print(type(int(value)))
         print('[%s] => %d' % (value, i))
     for row in dataset:
-        row[column] = lookup[row[column]]
-    return lookup
+        row[columna] = busqueda[row[columna]]
+    return busqueda
 
 
 # Encuentra el valor maximo y minimo de columna
-# [[minColum1,MaxColum1],[minColum2,MaxColum2],..]
-def dataset_minmax(dataset):
-    minmax = list()
-    for i in range(len(dataset[0])):
-        col_values = [row[i] for row in dataset]
-        value_min = min(col_values)
-        value_max = max(col_values)
-        minmax.append([value_min, value_max])
-    return minmax
+# def dataset_minmax(dataset):
+#     minmax = list()
+#     for i in range(len(dataset[0])):
+#         col_values = [row[i] for row in dataset]
+#         value_min = min(col_values)
+#         value_max = max(col_values)
+#         minmax.append([value_min, value_max])
+#     return minmax
 
 
 # Calcular la distancias euclidiano entre 2 vectores
@@ -89,10 +67,8 @@ def predecir_clasificacion(train, test_row, num_vecinos):
 
 
 # Divide el dataset segun parametros seleccionado con porcentaje > 1
-# preguntar al profe cual es el porc min
-# Controlar qque porcentaje/100 * dataset>=10
-def dividir_dataset(array, porcentaje):
-    # resta = 1 if header else 0
+def dividir_dataset(input, porcentaje):
+    array = input.to_numpy()
     trainRange = round((len(array)) * (porcentaje / 100))
     train = []
     test = []
@@ -107,8 +83,9 @@ def dividir_dataset(array, porcentaje):
 
 # Hasta 6 labels para clasificar en el plot
 # Plotear
-def dibujar_puntos(array, labels):
+def dibujar_puntos(input, labels):
     # Set de colores
+    array=input.to_numpy()
     colores = ["red", "blue", "green", "black", "yellow", "purple", "gray"]
     # Considero numero de clasificaciones posibles dentro del dataset <7
     # Recorto Array segun numero de labels en dataset, ya calculado
@@ -122,11 +99,58 @@ def dibujar_puntos(array, labels):
         # La ultima es fila es label para plot
         color = colores[labels.get(array[i][len(array[i]) - 1])]
         plt.plot(array[i][0], array[i][1], marker="o", color=color)
-
+    plt.xlabel("x1")
+    plt.ylabel("x2")
+    plt.title("Clasificación knn")
     plt.show()
 
 
-# Clasifica Test y devuelve resultados con metricas
+#Grafica puntos clasificados y regiones asociadas para k
+def plotear_grid(input,k, labels):
+    train, test = dividir_dataset(input, 100)
+    clasificados = []
+    for i in range(len(input)):
+        clasicado= predecir_clasificacion(train, train[i],k)
+        clasificados.append(labels[clasicado])
+
+    train = np.array(train)
+    Arreglo = train[:, :2]
+    h = .05  # Tamaño del peso en grid 03 default
+
+    # Color de mapas: Backgrouds y points
+    cmap_light = ListedColormap(['#FFAAAA', '#AAFFAA', '#AAAAFF'])
+    cmap_bold = ListedColormap(['#FF0000', '#00FF00', '#0000FF'])
+
+    x_min, x_max = Arreglo[:, 0].min() - 1, Arreglo[:, 0].max() + 1
+    #print(x_min, x_max)
+    y_min, y_max = Arreglo[:, 1].min() - 1, Arreglo[:, 1].max() + 1
+    #print(y_min, y_max)
+    xx, yy = np.meshgrid(np.arange(x_min, x_max, h),
+                         np.arange(y_min, y_max, h))
+    mezcla = np.c_[xx.ravel(), yy.ravel()]
+    print(len(mezcla)) #Region a clasificar
+    hora = time.time()
+    x = []
+    for j in range(len(mezcla)):
+        clasificado = predecir_clasificacion(train, mezcla[j], k)
+        clasificado = labels[clasificado]#Selecciona segun valor de etiqueta
+        x.append(clasificado)
+    x = np.array(x)
+
+    print(time.time()-hora)#Finalizacion de Grafica
+    x = x.reshape(xx.shape)
+    plt.figure()
+    plt.pcolormesh(xx, yy, x, cmap=cmap_light, shading='auto')
+    plt.scatter(Arreglo[:, 0], Arreglo[:, 1], c=clasificados, cmap=cmap_bold)
+    plt.xlim(xx.min(), xx.max())
+    plt.ylim(yy.min(), yy.max())
+    plt.title("Clasificación (k = %i, Distancia = 'Euclidiana')"
+              % (k))
+    plt.grid()
+    plt.show()
+
+
+# Clasifica test y devuelve resultados con metricas k=1..10
 def clasificar_datatest(train, test):
     acertados = 0
     resultados = dict()
@@ -183,6 +207,7 @@ def medir_procesamiento(metrica):
     desv = desv / len(metrica)
     print("Desvio estandar:", desv)
     # ploteo el promedio de tiempos encontrados
+    plt.title("Tiempos de Procesamiento para todo k: 1 a 10")
     plt.hlines(promedio, 1, 10, colors='red', linestyles="dashed", label="Media")
     plt.show()
 
@@ -190,82 +215,73 @@ def medir_procesamiento(metrica):
 def control_entrada(input, k, porcentaje):
     # porcentaje = 75
     # k = 8
-    # data = pd.DataFrame(input)
-    # print(type(data))
     if not input.empty:
-        # return "El conjunto tiene valores"
-        print("No vacio")
-        train, test = dividir_dataset(input.to_numpy(), porcentaje)
+        #print("No vacio")
+        train, test = dividir_dataset(input, porcentaje)
         if len(train) >= k:
             if len(input) != len(train): #dataset >= train
                 print("Clasificar")
                 return True
             else:
-                return [False, "El dataset contiene demasiados datos de entrenamiento"]
                 print("El dataset es todo Train, ingrese to a clasificar")
         else:
-            return [False, "Debe ingresar un valor de k menor a la longitud del Dataset"]
             print("Ingreso un k mayor a len Dataset")
-            # return False
+            return False
     else:
-        return [False, "El Dataset ingresado está vacío"]
         print("Dataset ingresado vacio")
-        # return False
+        return False
 
-#################################################################################################
-# Cargar CSV
-# Utilizando Pandas
-def tratar_csv(dataset_path, sep, header):
-    # dataset_path = 'datasets/dataset04.txt'
-    # sep = ";"
-    # header = 0 #0->con etiquetas, None -> sin etiquetas
-
-    # Si no esta tildado el header se pone None
-    # No esta considerando el primero en caso de no tener cabecera
-    input = pd.read_csv(dataset_path, sep=sep, header=header)
-
-    # Verifica si el archivo esta vacio
-
-    flag = control_entrada(input, 8, 75)
-
-
-    # Pasar de panda tabla a array
-
+# Verifico si la clase es String sino paso a int(mejora aciertos)
+def clase_to_int(input):
     array = input.to_numpy()
-    array2 = np.array(input).tolist()
-    # print(type(array))
-    # print(array)
-    # print(type(array2))
-    # print(array2)
-    if flag and type(array[0][len(array[0]) - 1]) == str:  # Verifico si la clase es String sino paso a int(mejora aciertos)
+    Datalist = np.array(input).tolist()
+    if flag and type(array[0][len(array[0]) - 1]) == str:
         print("String")
     else:
         print("Number")
-        for i in range(len(array2)):
-            a = int(array2[i][len(array2[i]) - 1])
-            array2[i][len(array[i]) - 1] = a
+        for i in range(len(Datalist)):
+            a = int(Datalist[i][len(Datalist[i]) - 1])
+            Datalist[i][len(array[i]) - 1] = a
+    return Datalist
 
-    return array2
-    # print(array2) #Transformador a Int
+#Funcion de lectura del dataset c/ opciones de entrada y controles
+#Opciones
+def leer_dataset(path,k,porcentaje,sep, header):
+    try:
+        input = pd.read_csv(path, sep=sep, header=header)
+        if control_entrada(input,k,porcentaje):
+            return input
+        else:
+            return print("Redefina sus entradas==> k:%s ; porcentaje:%s"%(k,porcentaje))
+    except Exception as e:
+        print(e)#Muestro el error en la ventana
+#################################################################################################
+# Cargar CSV Hardcoded
+dataset_path = 'datasets/dataset04.txt'
+sep = ";"
+header = 0 #0->con etiquetas, None -> sin etiquetas
+k=8
+porcentaje = 75
 
-    # Identidica las clases del dataset con un entero
-    #labels = str_column_to_int(array2, len(array2[0]) - 1)
-    # print(labels)
-
-    # Dividir dataset
-    #train, test = dividir_dataset(array, 75)
-    # ax=plt.gca()
-    # for line in ax.lines:
-    #     print(line.get_xdata)
-
-    # Plotear dataset
-    # dibujar_puntos(array, labels)
-
-    # Clasificar datas
-    # metrica = clasificar_datatest(train, test)
-
-    # Estadisticas
-    # medir_procesamiento(metrica)
+input = leer_dataset(dataset_path,k,porcentaje,sep,header)
+flag = control_entrada(input, k, porcentaje)
 
 
-    # Ver el tema de exportar funciones o meter en clases
+# Identidica las clases del dataset con un entero
+Datalist = clase_to_int(input)
+labels = str_column_to_int(Datalist, len(Datalist[0]) - 1)
+# print(labels)
+
+# Dividir dataset
+#train, test = dividir_dataset(input, porcentaje)
+
+# Plotear dataset
+#dibujar_puntos(input, labels)
+
+# Clasificar datas
+#metrica = clasificar_datatest(train, test)
+
+# Estadisticas
+#medir_procesamiento(metrica)
+
+#plotear_grid(input,k,labels)

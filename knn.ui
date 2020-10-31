@@ -159,7 +159,7 @@
       <rect>
        <x>20</x>
        <y>30</y>
-       <width>181</width>
+       <width>190</width>
        <height>41</height>
       </rect>
      </property>
@@ -172,7 +172,14 @@
        </widget>
       </item>
       <item>
-       <widget class="QSpinBox" name="input_entrenamiento"/>
+       <widget class="QSpinBox" name="input_entrenamiento">
+        <property name="minimum">
+         <number>0</number>
+        </property>
+        <property name="maximum">
+         <number>100</number>
+        </property>
+       </widget>
       </item>
       <item>
        <widget class="QLabel" name="label_porcentaje">
@@ -406,6 +413,19 @@
      </layout>
     </widget>
    </widget>
+   <widget class="QPushButton" name="pushButton">
+    <property name="geometry">
+     <rect>
+      <x>400</x>
+      <y>180</y>
+      <width>161</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Validar datos</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -543,70 +563,6 @@
    <sender>input_archivo</sender>
    <signal>textChanged(QString)</signal>
    <receiver>MainWindow</receiver>
-   <slot>updateTable()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>258</x>
-     <y>51</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>-2</x>
-     <y>129</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>checkBox</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>updateTable()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>732</x>
-     <y>59</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>970</x>
-     <y>48</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>separador_1</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>MainWindow</receiver>
-   <slot>updateTable()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>182</x>
-     <y>138</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>2</x>
-     <y>305</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>separador_2</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>MainWindow</receiver>
-   <slot>updateTable()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>252</x>
-     <y>139</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>1</x>
-     <y>342</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>input_archivo</sender>
-   <signal>textChanged(QString)</signal>
-   <receiver>MainWindow</receiver>
    <slot>entryControl()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -684,34 +640,34 @@
    </hints>
   </connection>
   <connection>
-   <sender>separador_2</sender>
+   <sender>pushButton</sender>
    <signal>clicked()</signal>
    <receiver>MainWindow</receiver>
    <slot>updateTable()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>270</x>
-     <y>139</y>
+     <x>506</x>
+     <y>221</y>
     </hint>
     <hint type="destinationlabel">
-     <x>3</x>
-     <y>226</y>
+     <x>6</x>
+     <y>510</y>
     </hint>
    </hints>
   </connection>
   <connection>
-   <sender>separador_1</sender>
-   <signal>clicked()</signal>
+   <sender>input_entrenamiento</sender>
+   <signal>valueChanged(int)</signal>
    <receiver>MainWindow</receiver>
-   <slot>updateTable()</slot>
+   <slot>updateTrainingSet()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>203</x>
-     <y>140</y>
+     <x>757</x>
+     <y>143</y>
     </hint>
     <hint type="destinationlabel">
-     <x>4</x>
-     <y>159</y>
+     <x>963</x>
+     <y>78</y>
     </hint>
    </hints>
   </connection>
@@ -724,5 +680,6 @@
   <slot>updateTest()</slot>
   <slot>updateTable()</slot>
   <slot>entryControl()</slot>
+  <slot>updateTrainingSet()</slot>
  </slots>
 </ui>

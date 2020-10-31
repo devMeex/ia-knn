@@ -9,7 +9,6 @@ from matplotlib.colors import ListedColormap
 import numpy as np
 import pandas as pd
 
-
 # Captura las clases y las etiqueta con un int
 def str_column_to_int(dataset, columna):
     valores_clases = [row[columna] for row in dataset]
@@ -63,6 +62,7 @@ def predecir_clasificacion(train, test_row, num_vecinos):
     vecinos = get_vecinos(train, test_row, num_vecinos)
     valores = [row[-1] for row in vecinos]
     prediccion = max(set(valores), key=valores.count)
+    print("prediccion" + str(prediccion))
     return prediccion
 
 
@@ -151,7 +151,8 @@ def plotear_grid(input,k, labels):
 
 
 # Clasifica test y devuelve resultados con metricas k=1..10
-def clasificar_datatest(train, test):
+def clasificar_datatest(train, test, labels):
+    print("letseethelabels" + str(labels))
     acertados = 0
     resultados = dict()
     for k in range(1, 11):
@@ -167,7 +168,7 @@ def clasificar_datatest(train, test):
             print('Punto Evaluado=%s, Clasificacion: %s' % (test[i][0:len(test[i]) - 1], label))
         print("\nK:%s => Acertados: %s, Porcentaje: %s%s , Tiempo(seg): %s\n" % (
             k, acertados, round(acertados / len(test) * 100, 3), '%', time.time() - startTime))
-        resultado = {"acertados": acertados, "porcentaje": acertados / len(test) * 100, "time": time.time() - startTime}
+        resultado = {"k": k, "acertados": acertados, "porcentaje": acertados / len(test) * 100, "time": time.time() - startTime}
         resultados[k] = resultado
         acertados = 0
     # print("\n Diccionario", len(resultados))
@@ -228,10 +229,31 @@ def control_entrada(input, k, porcentaje):
                 print("El dataset es todo Train, ingrese to a clasificar")
         else:
             print("Ingreso un k mayor a len Dataset")
-            return False
+            return False, "Debe ingresar un porcentaje de entrenamiento y el valor de K seleccionado debe ser menor a la cantidad de registros que contiene el dataset"
     else:
         print("Dataset ingresado vacio")
         return False
+
+# #################################################################################################
+# # Cargar CSV
+# # Utilizando Pandas
+# def tratar_csv(dataset_path, sep, header):
+#     # dataset_path = 'datasets/dataset04.txt'
+#     # sep = ";"
+#     # header = 0 #0->con etiquetas, None -> sin etiquetas
+
+#     # Si no esta tildado el header se pone None
+#     # No esta considerando el primero en caso de no tener cabecera
+#     print("separador" + sep)
+#     print("header" + str(header))
+#     input = pd.read_csv(dataset_path, sep=sep, header=header)
+
+#     # Verifica si el archivo esta vacio
+
+#     flag = control_entrada(input, 8, 75)
+
+
+#     # Pasar de panda tabla a array
 
 # Verifico si la clase es String sino paso a int(mejora aciertos)
 def clase_to_int(input):
@@ -252,27 +274,34 @@ def leer_dataset(path,k,porcentaje,sep, header):
     try:
         input = pd.read_csv(path, sep=sep, header=header)
         if control_entrada(input,k,porcentaje):
-            return input
+            Datalist = clase_to_int(input)
+            labels = str_column_to_int(Datalist, len(Datalist[0]) - 1)
+            return input, labels
         else:
-            return print("Redefina sus entradas==> k:%s ; porcentaje:%s"%(k,porcentaje))
+            message = "Redefina sus entradas==> k:%s ; porcentaje:%s"%(k,porcentaje)
+            return message
     except Exception as e:
         print(e)#Muestro el error en la ventana
 #################################################################################################
-# Cargar CSV Hardcoded
-dataset_path = 'datasets/dataset02.txt'
-sep = ";"
-header = 0 #0->con etiquetas, None -> sin etiquetas
-k=6
-porcentaje = 80
 
-input = leer_dataset(dataset_path,k,porcentaje,sep,header)
+# # Cargar CSV Hardcoded
+# dataset_path = 'datasets/dataset04.txt'
+# sep = ";"
+# header = 0 #0->con etiquetas, None -> sin etiquetas
+# k=8
+# porcentaje = 75
+
+# input = leer_dataset(dataset_path,k,porcentaje,sep,header)
+# flag = control_entrada(input, k, porcentaje)
 
 
 
-# Identidica las clases del dataset con un entero
-Datalist = clase_to_int(input)
-labels = str_column_to_int(Datalist, len(Datalist[0]) - 1)
-# print(labels)
+# # Identidica las clases del dataset con un entero
+# Datalist = clase_to_int(input)
+# labels = str_column_to_int(Datalist, len(Datalist[0]) - 1)
+# print("labels" + str(labels))
+
+# print("datalist" + str(Datalist))
 
 # Dividir dataset
 train, test = dividir_dataset(input, porcentaje)

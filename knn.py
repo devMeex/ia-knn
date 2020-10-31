@@ -156,6 +156,8 @@ def clasificar_datatest(train, test):
     resultados = dict()
     for k in range(1, 11):
         startTime = time.time()
+        if(len(train)<k):
+            return
         for i in range(len(test)):
             label = predecir_clasificacion(train, test[i], k)
             # print(type(label) == type(test[i][len(test[i])-1]))
@@ -235,7 +237,7 @@ def control_entrada(input, k, porcentaje):
 def clase_to_int(input):
     array = input.to_numpy()
     Datalist = np.array(input).tolist()
-    if flag and type(array[0][len(array[0]) - 1]) == str:
+    if type(array[0][len(array[0]) - 1]) == str:
         print("String")
     else:
         print("Number")
@@ -257,14 +259,14 @@ def leer_dataset(path,k,porcentaje,sep, header):
         print(e)#Muestro el error en la ventana
 #################################################################################################
 # Cargar CSV Hardcoded
-dataset_path = 'datasets/dataset04.txt'
+dataset_path = 'datasets/dataset02.txt'
 sep = ";"
 header = 0 #0->con etiquetas, None -> sin etiquetas
-k=8
-porcentaje = 75
+k=6
+porcentaje = 80
 
 input = leer_dataset(dataset_path,k,porcentaje,sep,header)
-flag = control_entrada(input, k, porcentaje)
+
 
 
 # Identidica las clases del dataset con un entero
@@ -273,13 +275,13 @@ labels = str_column_to_int(Datalist, len(Datalist[0]) - 1)
 # print(labels)
 
 # Dividir dataset
-#train, test = dividir_dataset(input, porcentaje)
+train, test = dividir_dataset(input, porcentaje)
 
 # Plotear dataset
 #dibujar_puntos(input, labels)
 
 # Clasificar datas
-#metrica = clasificar_datatest(train, test)
+metrica = clasificar_datatest(train, test)
 
 # Estadisticas
 #medir_procesamiento(metrica)

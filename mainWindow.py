@@ -6,6 +6,8 @@ from browseFile import BrowseFile
 
 class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     data = []
+    training_data = []
+    test_data = []
     def __init__(self, *args, **kwargs):
         QtWidgets.QMainWindow.__init__(self, *args, **kwargs)
         self.setupUi(self)
@@ -23,22 +25,23 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         updated in the GUI.
         '''
         self.input_archivo.setText( self.browseFile.getFileName() )
-        self.textBrowser.setText( str(self.data) )
+        if self.browseFile.getFileContent():
+            self.textBrowser.setText( str(self.data) )
 
     def renderData( self ):
-        if self.separador_1:
-            sep = ","
-        else:
+        print("coma" + str(self.separador_1.isChecked()))
+        if self.separador_2.isChecked():
             sep = ";"
+        else:
+            sep = ","
 
-        if self.checkBox.isChecked:
+        if self.checkBox.isChecked():
             header = 0
         else:
             header = None
 
         self.data = tratar_csv(self.browseFile.getFileName(), sep, header)
         self.textBrowser_2.setText(str(len(self.data)))
-        print(type(self.data))
 
     def createTable( self ):
         # Column count
@@ -52,20 +55,11 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             numrows = len(self.data)
             self.tableWidget.setRowCount(numrows)
 
+            # Fill table with data
             for row in range(numrows):
                 for column in range(numcols):
                     item = QtWidgets.QTableWidgetItem(str(self.data[row][column]))
-                    # item = QtWidgets.QTableWidgetItem("Holis")
-                    print(item)
                     self.tableWidget.setItem(row, column, item)
-
-            # print(type(rows))
-            # self.tableWidget.setRowCount(21)
-
-            #set header titles
-            # self.tableWidget.setHorizontalHeaderLabels(QString("Name;Age;Sex;Add").split(";"))
-            # self.tableWidget.setItem(0,2, QTableWidgetItem("Clase"))
-
 
     @pyqtSlot( )
     def browseSlot( self ):
@@ -96,7 +90,19 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     @pyqtSlot( )
     def classifySlot( self ):
         # call predecir_clasificacion method
-        self.textBrowser_2.setText( "classify button clicked" + "x =  " + str(self.input_x.value()) + "y =  " + str(self.input_y.value()) )
+        # self.textBrowser_2.setText( "classify button clicked" + "x =  " + str(self.input_x.value()) + "y =  " + str(self.input_y.value()) )
+        coord = [ self.input_x.value() , self.input_y.value() ]
+        print("x" + str(type(coord)))
+        self.textBrowser_2.setText(str(coord))
+        if self.data:
+            print(str(self.input_k))
+            print(str(type(self.input_k)))
+            print(str(self.input_k.value()))
+            print(str(type(self.input_k.value())))
+            pred = predecir_clasificacion(self.input_entrenamiento.value(), coord, self.input_k.value())
+            print("prediccion " + str(pred))
+        else:
+            self.textBrowser_2.setText("Cargue un dataset para poder realizar la predicción")
 
     @pyqtSlot( )
     def updateTest( self ):
@@ -113,6 +119,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def entryControl( self ):
         self.textBrowser_2.setText("controlando entrada")
         # control = control_entrada(self.data, self.input_k, self.input_entrenamiento)
+        # print("salida control" + str(control))
         # if control:
         #     self.textBrowser_2.setText("Es posible realizar operaciones")
         # else:

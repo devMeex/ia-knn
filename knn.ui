@@ -7,258 +7,52 @@
     <x>0</x>
     <y>0</y>
     <width>972</width>
-    <height>921</height>
+    <height>777</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QTextBrowser" name="textBrowser">
-    <property name="geometry">
-     <rect>
-      <x>30</x>
-      <y>710</y>
-      <width>631</width>
-      <height>151</height>
-     </rect>
-    </property>
-   </widget>
    <widget class="QWidget" name="horizontalLayoutWidget_3">
     <property name="geometry">
      <rect>
-      <x>10</x>
+      <x>20</x>
       <y>0</y>
-      <width>931</width>
+      <width>921</width>
       <height>51</height>
      </rect>
     </property>
     <layout class="QHBoxLayout" name="FileLayout">
      <item>
-      <layout class="QHBoxLayout" name="browseFileLayout">
-       <item>
-        <widget class="QPushButton" name="cargarArchivo_btn">
-         <property name="text">
-          <string>Cargar Archivo</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLineEdit" name="input_archivo">
-         <property name="readOnly">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </item>
-     <item>
-      <widget class="QCheckBox" name="checkBox">
+      <widget class="QPushButton" name="cargarArchivo_btn">
        <property name="text">
-        <string>El Dataset contiene cabecera?</string>
+        <string>Cargar Archivo</string>
        </property>
       </widget>
      </item>
-    </layout>
-   </widget>
-   <widget class="QWidget" name="horizontalLayoutWidget_7">
-    <property name="geometry">
-     <rect>
-      <x>20</x>
-      <y>230</y>
-      <width>921</width>
-      <height>461</height>
-     </rect>
-    </property>
-    <layout class="QHBoxLayout" name="graphicLayout">
      <item>
-      <widget class="QGroupBox" name="datos">
-       <property name="title">
-        <string>Datos</string>
+      <widget class="QLineEdit" name="input_archivo">
+       <property name="readOnly">
+        <bool>true</bool>
        </property>
-       <widget class="QTableWidget" name="tableWidget">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>30</y>
-          <width>371</width>
-          <height>421</height>
-         </rect>
-        </property>
-        <property name="columnCount">
-         <number>0</number>
-        </property>
-        <attribute name="horizontalHeaderShowSortIndicator" stdset="0">
-         <bool>false</bool>
-        </attribute>
-       </widget>
-       <widget class="QGroupBox" name="grafico">
-        <property name="geometry">
-         <rect>
-          <x>380</x>
-          <y>0</y>
-          <width>541</width>
-          <height>461</height>
-         </rect>
-        </property>
-        <property name="title">
-         <string>Gráfico</string>
-        </property>
-        <widget class="QGraphicsView" name="graphicsView_2">
-         <property name="geometry">
-          <rect>
-           <x>10</x>
-           <y>30</y>
-           <width>521</width>
-           <height>421</height>
-          </rect>
-         </property>
-        </widget>
-       </widget>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="graficar_btn">
+       <property name="text">
+        <string>Graficar Dataset</string>
+       </property>
       </widget>
      </item>
     </layout>
-   </widget>
-   <widget class="QTextBrowser" name="textBrowser_2">
-    <property name="geometry">
-     <rect>
-      <x>670</x>
-      <y>710</y>
-      <width>256</width>
-      <height>151</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QGroupBox" name="rendimiento">
-    <property name="geometry">
-     <rect>
-      <x>590</x>
-      <y>60</y>
-      <width>351</width>
-      <height>161</height>
-     </rect>
-    </property>
-    <property name="title">
-     <string>Probar Rendimiento</string>
-    </property>
-    <widget class="QPushButton" name="probar_btn">
-     <property name="geometry">
-      <rect>
-       <x>90</x>
-       <y>120</y>
-       <width>181</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Probar Rendimiento</string>
-     </property>
-    </widget>
-    <widget class="QWidget" name="horizontalLayoutWidget_4">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>30</y>
-       <width>190</width>
-       <height>41</height>
-      </rect>
-     </property>
-     <layout class="QHBoxLayout" name="trainingLayout">
-      <item>
-       <widget class="QLabel" name="label_entrenamiento">
-        <property name="text">
-         <string>Entrenamiento:</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QSpinBox" name="input_entrenamiento">
-        <property name="minimum">
-         <number>0</number>
-        </property>
-        <property name="maximum">
-         <number>100</number>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="label_porcentaje">
-        <property name="text">
-         <string>%</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-    <widget class="QWidget" name="horizontalLayoutWidget_5">
-     <property name="geometry">
-      <rect>
-       <x>210</x>
-       <y>30</y>
-       <width>121</width>
-       <height>41</height>
-      </rect>
-     </property>
-     <layout class="QHBoxLayout" name="testLayout">
-      <item>
-       <widget class="QLabel" name="label_test">
-        <property name="text">
-         <string>Test:</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLineEdit" name="input_test">
-        <property name="readOnly">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="label_porcentaje2">
-        <property name="text">
-         <string>%</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-    <widget class="QRadioButton" name="radioButton">
-     <property name="geometry">
-      <rect>
-       <x>210</x>
-       <y>90</y>
-       <width>131</width>
-       <height>22</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Mostrar todos</string>
-     </property>
-    </widget>
-    <widget class="QRadioButton" name="radioButton_2">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>90</y>
-       <width>181</width>
-       <height>22</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Mostrar óptimo y peor</string>
-     </property>
-     <property name="checked">
-      <bool>true</bool>
-     </property>
-    </widget>
    </widget>
    <widget class="QGroupBox" name="puntoAClasificar">
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>150</y>
-      <width>361</width>
+      <x>20</x>
+      <y>160</y>
+      <width>341</width>
       <height>71</height>
      </rect>
     </property>
@@ -326,23 +120,23 @@
     <widget class="QPushButton" name="clasificar_btn">
      <property name="geometry">
       <rect>
-       <x>250</x>
+       <x>240</x>
        <y>30</y>
        <width>91</width>
        <height>31</height>
       </rect>
      </property>
      <property name="text">
-      <string>Clasificar</string>
+      <string>Predecir</string>
      </property>
     </widget>
    </widget>
    <widget class="QGroupBox" name="cargaDatos">
     <property name="geometry">
      <rect>
-      <x>10</x>
+      <x>20</x>
       <y>60</y>
-      <width>571</width>
+      <width>521</width>
       <height>91</height>
      </rect>
     </property>
@@ -353,21 +147,27 @@
      <property name="geometry">
       <rect>
        <x>0</x>
-       <y>20</y>
-       <width>561</width>
-       <height>61</height>
+       <y>30</y>
+       <width>514</width>
+       <height>51</height>
       </rect>
      </property>
      <layout class="QHBoxLayout" name="separatorLayout">
       <item>
        <widget class="QLabel" name="seleccionarSeparador">
         <property name="text">
-         <string>Seleccionar Separador:</string>
+         <string>  Seleccionar Separador:</string>
         </property>
        </widget>
       </item>
       <item>
        <widget class="QRadioButton" name="separador_1">
+        <property name="minimumSize">
+         <size>
+          <width>65</width>
+          <height>0</height>
+         </size>
+        </property>
         <property name="text">
          <string>,</string>
         </property>
@@ -384,47 +184,238 @@
        </widget>
       </item>
       <item>
-       <widget class="QLabel" name="seleccionarK">
+       <widget class="QCheckBox" name="checkBox">
         <property name="text">
-         <string>Seleccionar k:</string>
-        </property>
-        <property name="checked" stdset="0">
-         <bool>false</bool>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QSpinBox" name="input_k">
-        <property name="minimum">
-         <number>1</number>
-        </property>
-        <property name="maximum">
-         <number>10</number>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="graficar_btn">
-        <property name="text">
-         <string>Graficar</string>
+         <string>El Dataset contiene cabecera?</string>
         </property>
        </widget>
       </item>
      </layout>
     </widget>
    </widget>
-   <widget class="QPushButton" name="pushButton">
+   <widget class="QPushButton" name="clasificar_btn_2">
     <property name="geometry">
      <rect>
-      <x>400</x>
-      <y>180</y>
+      <x>380</x>
+      <y>190</y>
       <width>161</width>
       <height>31</height>
      </rect>
     </property>
     <property name="text">
-     <string>Validar datos</string>
+     <string>Graficar Clasificación</string>
     </property>
+   </widget>
+   <widget class="QWidget" name="horizontalLayoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>240</y>
+      <width>231</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QLabel" name="seleccionarK">
+       <property name="text">
+        <string>Seleccionar k:</string>
+       </property>
+       <property name="checked" stdset="0">
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QSpinBox" name="input_k">
+       <property name="minimum">
+        <number>1</number>
+       </property>
+       <property name="maximum">
+        <number>10</number>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QGroupBox" name="rendimiento">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>300</y>
+      <width>501</width>
+      <height>161</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Probar Rendimiento</string>
+    </property>
+    <widget class="QPushButton" name="probar_btn">
+     <property name="geometry">
+      <rect>
+       <x>160</x>
+       <y>120</y>
+       <width>181</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Probar Rendimiento</string>
+     </property>
+    </widget>
+    <widget class="QWidget" name="horizontalLayoutWidget_4">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>30</y>
+       <width>190</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <layout class="QHBoxLayout" name="trainingLayout">
+      <item>
+       <widget class="QLabel" name="label_entrenamiento">
+        <property name="text">
+         <string>Entrenamiento:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QSpinBox" name="input_entrenamiento">
+        <property name="minimum">
+         <number>0</number>
+        </property>
+        <property name="maximum">
+         <number>100</number>
+        </property>
+        <property name="value">
+         <number>0</number>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_porcentaje">
+        <property name="text">
+         <string>%</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+    <widget class="QWidget" name="horizontalLayoutWidget_5">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>70</y>
+       <width>121</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <layout class="QHBoxLayout" name="testLayout">
+      <item>
+       <widget class="QLabel" name="label_test">
+        <property name="text">
+         <string>Test:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="input_test">
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_porcentaje2">
+        <property name="text">
+         <string>%</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+    <widget class="QWidget" name="verticalLayoutWidget">
+     <property name="geometry">
+      <rect>
+       <x>270</x>
+       <y>30</y>
+       <width>221</width>
+       <height>80</height>
+      </rect>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <widget class="QRadioButton" name="radioButton">
+        <property name="text">
+         <string>Mostrar todos</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QRadioButton" name="radioButton_2">
+        <property name="text">
+         <string>Mostrar óptimo y peor</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </widget>
+   <widget class="QGroupBox" name="grafico">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>470</y>
+      <width>521</width>
+      <height>251</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Información</string>
+    </property>
+    <widget class="QTextBrowser" name="textBrowser_2">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>30</y>
+       <width>501</width>
+       <height>211</height>
+      </rect>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QGroupBox" name="datos">
+    <property name="geometry">
+     <rect>
+      <x>550</x>
+      <y>68</y>
+      <width>411</width>
+      <height>651</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Datos</string>
+    </property>
+    <widget class="QTableWidget" name="tableWidget">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>30</y>
+       <width>391</width>
+       <height>611</height>
+      </rect>
+     </property>
+     <property name="columnCount">
+      <number>0</number>
+     </property>
+     <attribute name="horizontalHeaderShowSortIndicator" stdset="0">
+      <bool>false</bool>
+     </attribute>
+    </widget>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
@@ -502,8 +493,8 @@
    <slot>graphSlot()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>527</x>
-     <y>128</y>
+     <x>614</x>
+     <y>43</y>
     </hint>
     <hint type="destinationlabel">
      <x>2</x>
@@ -563,7 +554,7 @@
    <sender>input_archivo</sender>
    <signal>textChanged(QString)</signal>
    <receiver>MainWindow</receiver>
-   <slot>entryControl()</slot>
+   <slot>updateTable()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>329</x>
@@ -572,86 +563,6 @@
     <hint type="destinationlabel">
      <x>-1</x>
      <y>390</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>checkBox</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>entryControl()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>774</x>
-     <y>54</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>1</x>
-     <y>435</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>input_entrenamiento</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>MainWindow</receiver>
-   <slot>entryControl()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>742</x>
-     <y>129</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>966</x>
-     <y>441</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>input_k</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>MainWindow</receiver>
-   <slot>entryControl()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>440</x>
-     <y>135</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>967</x>
-     <y>385</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>input_archivo</sender>
-   <signal>textChanged(QString)</signal>
-   <receiver>MainWindow</receiver>
-   <slot>browseSlot()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>155</x>
-     <y>45</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>3</x>
-     <y>33</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>pushButton</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>updateTable()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>506</x>
-     <y>221</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>6</x>
-     <y>510</y>
     </hint>
    </hints>
   </connection>
@@ -671,6 +582,86 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>input_entrenamiento</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>updateTable()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>742</x>
+     <y>129</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>966</x>
+     <y>441</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>clasificar_btn_2</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>plotGrid()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>421</x>
+     <y>217</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>579</x>
+     <y>244</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>updateTable()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>774</x>
+     <y>54</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1</x>
+     <y>435</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>separador_1</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>updateTable()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>190</x>
+     <y>141</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>175</x>
+     <y>252</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>separador_2</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>updateTable()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>248</x>
+     <y>138</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>335</x>
+     <y>250</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>browseSlot()</slot>
@@ -681,5 +672,7 @@
   <slot>updateTable()</slot>
   <slot>entryControl()</slot>
   <slot>updateTrainingSet()</slot>
+  <slot>plotGrid()</slot>
+  <slot>checkSeparator()</slot>
  </slots>
 </ui>

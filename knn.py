@@ -23,18 +23,6 @@ def str_column_to_int(dataset, columna):
         row[columna] = busqueda[row[columna]]
     return busqueda
 
-
-# Encuentra el valor maximo y minimo de columna
-# def dataset_minmax(dataset):
-#     minmax = list()
-#     for i in range(len(dataset[0])):
-#         col_values = [row[i] for row in dataset]
-#         value_min = min(col_values)
-#         value_max = max(col_values)
-#         minmax.append([value_min, value_max])
-#     return minmax
-
-
 # Calcular la distancias euclidiano entre 2 vectores
 def distancia_euclidiana(row1, row2):
     distancia = 0.0
@@ -62,7 +50,6 @@ def predecir_clasificacion(train, test_row, num_vecinos):
     vecinos = get_vecinos(train, test_row, num_vecinos)
     valores = [row[-1] for row in vecinos]
     prediccion = max(set(valores), key=valores.count)
-    print("prediccion" + str(prediccion))
     return prediccion
 
 
@@ -74,7 +61,6 @@ def dividir_dataset(input, porcentaje):
     test = []
     for i in range(trainRange):
         train.append(array[i])
-        # print(array[i])
 
     for i in range(trainRange, len(array)):
         test.append(array[i])
@@ -90,7 +76,6 @@ def dibujar_puntos(input, labels):
     # Considero numero de clasificaciones posibles dentro del dataset <7
     # Recorto Array segun numero de labels en dataset, ya calculado
     colores = [colores[i] for i in range(len(labels))]
-    # print(labels.keys())
     for i in range(len(array)):
         # Emocionante!
         # Verifico las labels de clasificacion
@@ -122,13 +107,10 @@ def plotear_grid(input,k, labels):
     cmap_bold = ListedColormap(['#FF0000', '#00FF00', '#0000FF'])
 
     x_min, x_max = Arreglo[:, 0].min() - 1, Arreglo[:, 0].max() + 1
-    #print(x_min, x_max)
     y_min, y_max = Arreglo[:, 1].min() - 1, Arreglo[:, 1].max() + 1
-    #print(y_min, y_max)
     xx, yy = np.meshgrid(np.arange(x_min, x_max, h),
                          np.arange(y_min, y_max, h))
     mezcla = np.c_[xx.ravel(), yy.ravel()]
-    print(len(mezcla)) #Region a clasificar
     hora = time.time()
     x = []
     for j in range(len(mezcla)):
@@ -137,7 +119,6 @@ def plotear_grid(input,k, labels):
         x.append(clasificado)
     x = np.array(x)
 
-    print(time.time()-hora)#Finalizacion de Grafica
     x = x.reshape(xx.shape)
     plt.figure()
     plt.pcolormesh(xx, yy, x, cmap=cmap_light, shading='auto')
@@ -152,16 +133,19 @@ def plotear_grid(input,k, labels):
 
 # Clasifica test y devuelve resultados con metricas k=1..10
 def clasificar_datatest(train, test, labels):
-    print("letseethelabels" + str(labels))
     acertados = 0
     resultados = dict()
-    for k in range(1, 11):
+    if len(train) >= 11:
+        max = 11
+    else:
+        max = len(train)
+
+    for k in range(1, max):
         startTime = time.time()
         if(len(train)<k):
             return
         for i in range(len(test)):
             label = predecir_clasificacion(train, test[i], k)
-            # print(type(label) == type(test[i][len(test[i])-1]))
             if (label == test[i][len(test[i]) - 1]):  # Verifico si hay acierto
                 acertados += 1
             label = labels[label]
@@ -171,7 +155,6 @@ def clasificar_datatest(train, test, labels):
         resultado = {"k": k, "acertados": acertados, "porcentaje": acertados / len(test) * 100, "time": time.time() - startTime}
         resultados[k] = resultado
         acertados = 0
-    # print("\n Diccionario", len(resultados))
     return resultados
 
 
@@ -190,7 +173,6 @@ def medir_procesamiento(metrica):
     for k in metrica:
         x.append(k)
         y.append(metrica[k]['time'])
-        # print(metrica[k])
         total += metrica[k]['time']
         if (metrica[k]['time'] > max):
             max = metrica[k]['time']
@@ -200,7 +182,6 @@ def medir_procesamiento(metrica):
             kmin = k
     print("El K:%s (optimo seg):%s , K:%s (peor seg):%s  " % (kmin, metrica.get(kmin), kmax, metrica.get(kmax)))
     promedio = total / len(metrica)
-    print("Promedio:", promedio)
     plt.plot(x, y)
     plt.xlabel("K")
     plt.ylabel("Procesamiento(seg)")
@@ -208,52 +189,30 @@ def medir_procesamiento(metrica):
     for k in metrica:
         desv += (metrica[k]['time'] - promedio) ** 2
     desv = desv / len(metrica)
-    print("Desvio estandar:", desv)
     # ploteo el promedio de tiempos encontrados
     plt.title("Tiempos de Procesamiento para todo k: 1 a 10")
     plt.hlines(promedio, 1, 10, colors='red', linestyles="dashed", label="Media")
     plt.show()
+    return metrica.get(kmin), metrica.get(kmax), promedio, desv
 
 #Verificar controles de carga archivo vacio o k con paramtros correctos
 def control_entrada(input, k, porcentaje):
     # porcentaje = 75
     # k = 8
     if not input.empty:
-        #print("No vacio")
         train, test = dividir_dataset(input, porcentaje)
         if len(train) >= k:
             if len(input) != len(train): #dataset >= train
-                print("Clasificar")
                 return True
             else:
-                print("El dataset es todo Train, ingrese to a clasificar")
+                print("El dataset es no contiene datos de entrenamiento, ingrese to a clasificar")
+                return True
         else:
             print("Ingreso un k mayor a len Dataset")
             return False, "Debe ingresar un porcentaje de entrenamiento y el valor de K seleccionado debe ser menor a la cantidad de registros que contiene el dataset"
     else:
         print("Dataset ingresado vacio")
-        return False
-
-# #################################################################################################
-# # Cargar CSV
-# # Utilizando Pandas
-# def tratar_csv(dataset_path, sep, header):
-#     # dataset_path = 'datasets/dataset04.txt'
-#     # sep = ";"
-#     # header = 0 #0->con etiquetas, None -> sin etiquetas
-
-#     # Si no esta tildado el header se pone None
-#     # No esta considerando el primero en caso de no tener cabecera
-#     print("separador" + sep)
-#     print("header" + str(header))
-#     input = pd.read_csv(dataset_path, sep=sep, header=header)
-
-#     # Verifica si el archivo esta vacio
-
-#     flag = control_entrada(input, 8, 75)
-
-
-#     # Pasar de panda tabla a array
+        return False, "Dataset ingresado vacio"
 
 # Verifico si la clase es String sino paso a int(mejora aciertos)
 def clase_to_int(input):
@@ -278,41 +237,8 @@ def leer_dataset(path,k,porcentaje,sep, header):
             labels = str_column_to_int(Datalist, len(Datalist[0]) - 1)
             return input, labels
         else:
-            message = "Redefina sus entradas==> k:%s ; porcentaje:%s"%(k,porcentaje)
+            message = "Redefina las entradas"
             return message
     except Exception as e:
         print(e)#Muestro el error en la ventana
-#################################################################################################
 
-# # Cargar CSV Hardcoded
-# dataset_path = 'datasets/dataset04.txt'
-# sep = ";"
-# header = 0 #0->con etiquetas, None -> sin etiquetas
-# k=8
-# porcentaje = 75
-
-# input = leer_dataset(dataset_path,k,porcentaje,sep,header)
-# flag = control_entrada(input, k, porcentaje)
-
-
-
-# # Identidica las clases del dataset con un entero
-# Datalist = clase_to_int(input)
-# labels = str_column_to_int(Datalist, len(Datalist[0]) - 1)
-# print("labels" + str(labels))
-
-# print("datalist" + str(Datalist))
-
-# Dividir dataset
-train, test = dividir_dataset(input, porcentaje)
-
-# Plotear dataset
-#dibujar_puntos(input, labels)
-
-# Clasificar datas
-metrica = clasificar_datatest(train, test)
-
-# Estadisticas
-#medir_procesamiento(metrica)
-
-#plotear_grid(input,k,labels)

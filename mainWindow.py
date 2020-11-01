@@ -20,6 +20,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         self.cargarArchivo_btn.clicked.connect(self.browseSlot)
         self.createTable()
+        self.setInputTest()
 
     def refreshAll( self ):
         '''
@@ -31,10 +32,15 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         '''
         self.input_archivo.setText( self.browseFile.getFileName() )
         if self.browseFile.getFileContent():
-            self.textBrowser.setText( str(self.data) )
+            self.data = self.browseFile.getFileContent()
+        else:
+            self.data = None
+
+    def setInputTest( self ):
+        testPercentage = 100 - self.input_entrenamiento.value()
+        self.input_test.setText( str(testPercentage) )
 
     def renderData( self ):
-        print("coma" + str(self.separador_1.isChecked()))
         if self.separador_2.isChecked():
             sep = ";"
         else:
@@ -44,12 +50,22 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             header = 0
         else:
             header = None
-        if self.input_entrenamiento.value() != 0:
-            self.data = leer_dataset(self.browseFile.getFileName(), self.input_k.value(), self.input_entrenamiento.value(), sep, header)[0].values.tolist()
-            self.data_df = leer_dataset(self.browseFile.getFileName(), self.input_k.value(), self.input_entrenamiento.value(), sep, header)[0]
-            self.labels = leer_dataset(self.browseFile.getFileName(), self.input_k.value(), self.input_entrenamiento.value(), sep, header)[1]
-            self.textBrowser.setText(str(self.data))
-        else: self.textBrowser_2.setText("Seleccione un porcentaje de entrenamiento y vuelva a hacer click en Validar Datos")
+        try:
+            action = leer_dataset(self.browseFile.getFileName(), self.input_k.value(), self.input_entrenamiento.value(), sep, header)
+            print('action')
+            print(action)
+            print('endaction')
+            if action:
+                self.data = action[0].values.tolist()
+                self.data_df = action[0]
+                self.labels = action[1]
+            else:
+                self.textBrowser_2.setText(action)
+        except:
+            if self.input_entrenamiento.value() == 0:
+                self.textBrowser_2.setText("Seleccione un porcentaje de entrenamiento mayor a cero")
+            else:
+                self.textBrowser_2.setText("El dataset ingresado no es valido. Ingrese otro dataset para poder realizar operaciones")
 
     def createTable( self ):
         # Column count
@@ -61,12 +77,18 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             # Row count
             numrows = len(self.data)
             self.tableWidget.setRowCount(numrows)
+            try:
+                for row in range(numrows):
+                    for column in range(numcols):
+                        item = QtWidgets.QTableWidgetItem(str(self.data[row][column]))
+                        self.tableWidget.setItem(row, column, item)
+                self.textBrowser_2.clear()
+            except:
+                self.textBrowser_2.setText("El separador elegido no coincide con el separador del Dataset cargado")
+                self.clearTable()
 
-            # Fill table with data
-            for row in range(numrows):
-                for column in range(numcols):
-                    item = QtWidgets.QTableWidgetItem(str(self.data[row][column]))
-                    self.tableWidget.setItem(row, column, item)
+    def clearTable( self ):
+        self.tableWidget.setRowCount(0)
 
     @pyqtSlot( )
     def browseSlot( self ):
@@ -74,11 +96,11 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         options = QtWidgets.QFileDialog.Options()
         options |= QtWidgets.QFileDialog.DontUseNativeDialog
         fileName, _ = QtWidgets.QFileDialog.getOpenFileName(
-                        None,
-                        "QFileDialog.getOpenFileName()",
-                        "",
-                        "Plain text files (*.txt);;CSV files (*.csv)",
-                        options=options)
+                    None,
+                    "Search File",
+                    "",
+                    "Plain text files (*.txt);;CSV files (*.csv)",
+                    options=options)
         if fileName:
             self.browseFile.setFileName( fileName )
             self.refreshAll()
@@ -86,63 +108,101 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     @pyqtSlot( )
     def graphSlot( self ):
         # call graph method
-        self.textBrowser_2.setText( "graph button clicked" + "  , = " + str(self.separador_1.isChecked()) + "  ; = " + str(self.separador_2.isChecked()) + "  k = " + str(self.input_k.value()) )
-        dibujar_puntos(self.data_df, self.labels)
-        plotear_grid(self.data_df, self.input_k, self.labels)
+        if not (self.data is None):
+            dibujar_puntos(self.data_df, self.labels)
+        else:
+            self.textBrowser_2.setText("Cargue un dataset válido para poder graficarlo")
+
 
 
     @pyqtSlot( )
     def testSlot( self ):
         # call method clasificar data test
-        self.textBrowser_2.setText( "test button clicked" + " entrenamiento = " + str(self.input_entrenamiento.value()) )
-        print("testdata" + str(self.test_data))
-        print("testtraining" + str(self.training_data))
-        test = clasificar_datatest(self.training_data, self.test_data, self.labels)
-        print("testslot" + str(test))
-        self.textBrowser_2.setText("\nK:%s => Acertados: %s, Porcentaje: %s%s , Tiempo(seg): %s\n" % (
-            k, acertados, round(acertados / len(test) * 100, 3), '%', time.time() - startTime))
+        if not (self.data is None):
+            test = clasificar_datatest(self.training_data, self.test_data, self.labels)
+            self.radioButton.isChecked()
+            if self.radioButton.isChecked():
+                self.textBrowser_2.clear()
+                for i in range(1, len(test)+1):
+                    (self.textBrowser_2.append("K: " + str(test[i]['k']) + "\n"
+                        + str(test[i]["acertados"]) + " aciertos" + "\n"
+                        + "Porcentaje: " + str(test[i]["porcentaje"]) + "\n"
+                        + "Tiempo: " + str(test[i]["time"]) + "\n" + "\n"
+                    ))
+            else:
+                proc = medir_procesamiento(test)
+                (self.textBrowser_2.setText("El k óptimo es: " + str(proc[0]['k']) + "\n"
+                    + str(proc[0]["acertados"]) + " aciertos" + "\n"
+                    + "Porcentaje: " + str(proc[0]["porcentaje"]) + "\n"
+                    + "Tiempo: " + str(proc[0]["time"]) + "\n" + "\n"
+                    "El peor k es: " + str(proc[1]['k']) + "\n"
+                    + str(proc[1]["acertados"]) + " aciertos" + "\n"
+                    + "Porcentaje: " + str(proc[1]["porcentaje"]) + "\n"
+                    + "Tiempo: " + str(proc[1]["time"]) + "\n" + "\n"
+                    + "Promedio: " + str(proc[2]) + "\n" + "\n"
+                    + "Desvío Estándar: " + str(proc[3]) + "\n"
+                ))
+        else:
+            self.textBrowser_2.setText("Cargue un dataset válido para poder probar el rendimiento")
 
     @pyqtSlot( )
     def updateTrainingSet( self ):
-        self.renderData()
-        divided_sets = dividir_dataset(self.data_df, self.input_entrenamiento.value())
-        self.training_data = divided_sets[0]
-        self.test_data = divided_sets[1]
-        self.textBrowser.setText(str(self.training_data))
+        if (not (self.data is None)):
+            if (self.input_entrenamiento.value() > 0):
+                self.renderData()
+                print(self.data_df)
+                divided_sets = dividir_dataset(self.data_df, self.input_entrenamiento.value())
+                self.training_data = divided_sets[0]
+                self.test_data = divided_sets[1]
+            else:
+                self.textBrowser_2.setText("Introduzca un porcentaje de entrenamiento mayor a cero")
+        else:
+            self.textBrowser_2.setText("Cargue un dataset válido para poder realizar operaciones")
 
     @pyqtSlot( )
     def classifySlot( self ):
         # call predecir_clasificacion method
         coord = [ self.input_x.value() , self.input_y.value() ]
         self.textBrowser_2.setText(str(coord))
-        if not self.data:
-            self.textBrowser_2.setText("Cargue un dataset para poder realizar la predicción")
+        if self.data is None:
+            self.textBrowser_2.setText("Cargue un dataset válido para poder realizar la predicción")
         elif not self.training_data:
             self.textBrowser_2.setText("Seleccione un porcentaje de entrenamiento")
         else:
             pred = predecir_clasificacion(self.training_data, coord, self.input_k.value())
-            self.textBrowser_2.setText("El punto pertenece a la clase: " + str(pred))
+            self.textBrowser_2.setText("El punto " + str(coord) + " pertenece a la clase: " + str(pred))
+
+    @pyqtSlot( )
+    def plotGrid( self ):
+        # call plotear_grid method
+        if (not (self.data is None)):
+            plotear_grid(self.data_df, self.input_k.value(), self.labels)
+        else:
+            self.textBrowser_2.setText("Cargue un dataset válido para graficar")
 
     @pyqtSlot( )
     def updateTest( self ):
         # call predecir_clasificacion method
-        testPercentage = 100 - self.input_entrenamiento.value()
-        self.input_test.setText( str(testPercentage) )
+        if self.input_entrenamiento.value() > 0:
+            self.textBrowser_2.clear()
+        else:
+            self.textBrowser_2.setText("Introduzca un porcentaje de entrenamiento mayor a cero")
+        self.setInputTest()
 
     @pyqtSlot( )
     def updateTable( self ):
-        self.renderData()
-        self.createTable()
-
-    @pyqtSlot( )
-    def entryControl( self ):
-        self.textBrowser_2.setText("controlando entrada")
-        # control = control_entrada(self.data, self.input_k, self.input_entrenamiento)
-        # print("salida control" + str(control))
-        # if control:
-        #     self.textBrowser_2.setText("Es posible realizar operaciones")
-        # else:
-        #     self.textBrowser_2.setText(control[1])
+        # self.textBrowser_2.clear()
+        if (not (self.data is None)):
+            self.renderData()
+            if self.input_entrenamiento.value() > 0:
+                self.renderData()
+                self.createTable()
+            else:
+                self.clearTable()
+                self.textBrowser_2.setText("Introduzca un porcentaje de entrenamiento mayor a cero")
+        else:
+            self.clearTable()
+            self.textBrowser_2.setText("Cargue un dataset valido los datos para poder realizar operaciones")
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication([])

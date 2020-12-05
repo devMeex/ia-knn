@@ -100,17 +100,23 @@ def plotear_grid(input,k, labels):
 
     train = np.array(train)
     Arreglo = train[:, :2]
-    h = .05  # Tamaño del peso en grid 03 default
+    h = .085 # Tamaño del peso en grid 03 default
 
     # Color de mapas: Backgrouds y points
     cmap_light = ListedColormap(['#FFAAAA', '#AAFFAA', '#AAAAFF'])
     cmap_bold = ListedColormap(['#FF0000', '#00FF00', '#0000FF'])
+    colores = ['#FF0000', '#00FF00', '#0000FF']
 
+    #Verificar en labels el que tiene valor cero->rojo
+    #el otro valor es azul
     x_min, x_max = Arreglo[:, 0].min() - 1, Arreglo[:, 0].max() + 1
+    #print(x_min, x_max)
     y_min, y_max = Arreglo[:, 1].min() - 1, Arreglo[:, 1].max() + 1
+    #print(y_min, y_max)
     xx, yy = np.meshgrid(np.arange(x_min, x_max, h),
                          np.arange(y_min, y_max, h))
     mezcla = np.c_[xx.ravel(), yy.ravel()]
+    print(len(mezcla)) #Region a clasificar
     hora = time.time()
     x = []
     for j in range(len(mezcla)):
@@ -119,15 +125,22 @@ def plotear_grid(input,k, labels):
         x.append(clasificado)
     x = np.array(x)
 
+    print(time.time()-hora)#Finalizacion de Grafica
     x = x.reshape(xx.shape)
     plt.figure()
     plt.pcolormesh(xx, yy, x, cmap=cmap_light, shading='auto')
     plt.scatter(Arreglo[:, 0], Arreglo[:, 1], c=clasificados, cmap=cmap_bold)
     plt.xlim(xx.min(), xx.max())
     plt.ylim(yy.min(), yy.max())
-    plt.title("Clasificación (k = %i, Distancia = 'Euclidiana')"
-              % (k))
-    plt.grid()
+    plt.xlabel("x1")
+    plt.ylabel("x2")
+    plt.title("Clasificación (k = %i, Distancia = 'Euclidiana')==> %s"
+              % (k,labels))
+    etiquetas = list(labels)
+    red_patch = mpatches.Patch(color=colores[0], label=etiquetas[0])
+    blue_patch = mpatches.Patch(color=colores[2], label=etiquetas[1])
+    plt.legend(handles=[red_patch, blue_patch])
+    #plt.grid()
     plt.show()
 
 
@@ -163,7 +176,7 @@ def medir_procesamiento(metrica):
     # Inicializaciones
     total = 0.0
     max = 0
-    min = 1
+    min = 100
     kmin = 0
     kmax = 0
     x = []
@@ -172,23 +185,26 @@ def medir_procesamiento(metrica):
     # Busco los valores de los tiempos max y min
     for k in metrica:
         x.append(k)
-        y.append(metrica[k]['time'])
-        total += metrica[k]['time']
-        if (metrica[k]['time'] > max):
-            max = metrica[k]['time']
+        y.append(metrica[k]['porcentaje'])
+        print(metrica[k])
+        total += metrica[k]['porcentaje']
+        if (metrica[k]['porcentaje'] > max):
+            max = metrica[k]['porcentaje']
             kmax = k
-        if (metrica[k]['time'] < min):
-            min = metrica[k]['time']
+        if (metrica[k]['porcentaje'] < min):
+            min = metrica[k]['porcentaje']
             kmin = k
-    print("El K:%s (optimo seg):%s , K:%s (peor seg):%s  " % (kmin, metrica.get(kmin), kmax, metrica.get(kmax)))
+    print("El K:%s (Optimo):%s , K:%s (Peor):%s  " % (kmax, metrica.get(kmax),kmin, metrica.get(kmin)))
     promedio = total / len(metrica)
+    print("Promedio de Aciertos de los K(%):", promedio)
     plt.plot(x, y)
     plt.xlabel("K")
-    plt.ylabel("Procesamiento(seg)")
+    plt.ylabel("Aciertos(%)")
     # Calculo el desvio estandar
     for k in metrica:
-        desv += (metrica[k]['time'] - promedio) ** 2
+        desv += (metrica[k]['porcentaje'] - promedio) ** 2
     desv = desv / len(metrica)
+    print("Desvio estandar:", desv)
     # ploteo el promedio de tiempos encontrados
     plt.title("Tiempos de Procesamiento para todo k: 1 a 10")
     plt.hlines(promedio, 1, 10, colors='red', linestyles="dashed", label="Media")

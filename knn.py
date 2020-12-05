@@ -6,6 +6,7 @@ from math import sqrt
 
 import matplotlib.pyplot as plt
 from matplotlib.colors import ListedColormap
+import matplotlib.patches as mpatches
 import numpy as np
 import pandas as pd
 

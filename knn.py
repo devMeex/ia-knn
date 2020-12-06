@@ -207,8 +207,9 @@ def medir_procesamiento(metrica):
     desv = desv / len(metrica)
     print("Desvio estandar:", desv)
     # ploteo el promedio de tiempos encontrados
-    plt.title("Tiempos de Procesamiento para todo k: 1 a 10")
+    plt.title("Porcentaje de aciertos")
     plt.hlines(promedio, 1, 10, colors='red', linestyles="dashed", label="Media")
+    plt.legend()
     plt.show()
     return metrica.get(kmax), metrica.get(kmin), promedio, desv
 

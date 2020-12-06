@@ -66,7 +66,7 @@ class Ui_MainWindow(object):
         self.separatorLayout.addWidget(self.seleccionarSeparador)
         self.separador_1 = QtWidgets.QRadioButton(self.horizontalLayoutWidget_2)
         self.separador_1.setMinimumSize(QtCore.QSize(65, 0))
-        self.separador_1.setChecked(True)
+        #self.separador_1.setChecked(False)
         self.separador_1.setObjectName("separador_1")
         self.separatorLayout.addWidget(self.separador_1)
         self.separador_2 = QtWidgets.QRadioButton(self.horizontalLayoutWidget_2)

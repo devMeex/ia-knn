@@ -21,6 +21,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.cargarArchivo_btn.clicked.connect(self.browseSlot)
         self.createTable()
         self.setInputTest()
+        self.probar_btn.setDisabled(True)
+        self.graficar_btn.setDisabled(True)
+        self.clasificar_btn.setDisabled(True)
+        self.clasificar_btn_2.setDisabled(True)
 
     def refreshAll( self ):
         '''
@@ -36,9 +40,19 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         else:
             self.data = None
 
+    def checked(self):
+        if (self.separador_1.isChecked() or self.separador_2.isChecked()):
+            self.graficar_btn.setDisabled(False)
+            self.probar_btn.setDisabled(False)
+            self.clasificar_btn.setDisabled(False)
+            self.clasificar_btn_2.setDisabled(False)
+        else:
+            self.textBrowser_2.setText("Seleccione marcador asociado al dataset")
+
     def setInputTest( self ):
         testPercentage = 100 - self.input_entrenamiento.value()
         self.input_test.setText( str(testPercentage) )
+
 
     def renderData( self ):
         if self.separador_2.isChecked():
@@ -57,6 +71,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             print('endaction')
             if action:
                 self.data = action[0].values.tolist()
+                self.checked()
                 self.data_df = action[0]
                 self.labels = action[1]
             else:
@@ -111,7 +126,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         if not (self.data is None):
             dibujar_puntos(self.data_df, self.labels)
         else:
-            self.textBrowser_2.setText("Cargue un dataset válido para poder graficarlo")
+            self.textBrowser_2.setText("Seleccione marcador asociado al dataset")
 
 
 
@@ -175,6 +190,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     @pyqtSlot( )
     def plotGrid( self ):
         # call plotear_grid method
+
         if (not (self.data is None)):
             plotear_grid(self.data_df, self.input_k.value(), self.labels)
         else:

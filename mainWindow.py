@@ -123,7 +123,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     @pyqtSlot( )
     def graphSlot( self ):
         # call graph method
-        print(self.data)
         if not (self.data is None):
             dibujar_puntos(self.data_df, self.labels)
         else:

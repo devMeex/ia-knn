@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 from knn_ui import *
 from knn import *
 from PyQt5.QtCore import QObject, pyqtSlot
@@ -17,8 +19,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         QtWidgets.QMainWindow.__init__(self, *args, **kwargs)
         self.setupUi(self)
         self.browseFile = BrowseFile()
-
-        self.cargarArchivo_btn.clicked.connect(self.browseSlot)
         self.createTable()
         self.setInputTest()
         self.probar_btn.setDisabled(True)
@@ -127,8 +127,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             dibujar_puntos(self.data_df, self.labels)
         else:
             self.textBrowser_2.setText("Seleccione marcador asociado al dataset")
-
-
 
     @pyqtSlot( )
     def testSlot( self ):

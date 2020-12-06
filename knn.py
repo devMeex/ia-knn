@@ -210,7 +210,7 @@ def medir_procesamiento(metrica):
     plt.title("Tiempos de Procesamiento para todo k: 1 a 10")
     plt.hlines(promedio, 1, 10, colors='red', linestyles="dashed", label="Media")
     plt.show()
-    return metrica.get(kmin), metrica.get(kmax), promedio, desv
+    return metrica.get(kmax), metrica.get(kmin), promedio, desv
 
 #Verificar controles de carga archivo vacio o k con paramtros correctos
 def control_entrada(input, k, porcentaje):
